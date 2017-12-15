@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwissDraw", "SwissDraw\SwissDraw.csproj", "{7CC326C7-AAEC-448D-9F35-3B682A645D42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwissDrawTests", "SwissDrawTests\SwissDrawTests.csproj", "{463882EC-45D7-4F13-B7FB-D7880D4879D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7CC326C7-AAEC-448D-9F35-3B682A645D42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CC326C7-AAEC-448D-9F35-3B682A645D42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CC326C7-AAEC-448D-9F35-3B682A645D42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{463882EC-45D7-4F13-B7FB-D7880D4879D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{463882EC-45D7-4F13-B7FB-D7880D4879D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{463882EC-45D7-4F13-B7FB-D7880D4879D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{463882EC-45D7-4F13-B7FB-D7880D4879D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

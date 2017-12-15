@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SwissDraw
 {
-    class Match
+    public class Match
     {
         private int person1;
         private int person2;
@@ -24,12 +24,17 @@ namespace SwissDraw
             result = 0;
         }
 
-        public Match[] makeMatch(Dictionary<int, Person> Persons, Match[] results)
+        public Match[] MakeMatch(Dictionary<int, Person> persons, Match[] results)
         {
             Match[] matches = new Match[1];
             matches[0] = new Match (1,10);
             return matches;
         }
+        public Match[] MergeMatch(Match[] results1, Match[] results2)
+        {
+            return results1;
+        }
+
 
     }
 

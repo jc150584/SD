@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace SwissDraw
 {
-    class Person
+    public class Person
     {
         public int LotNumber { get; set; }
         public string PersonGroup { get; set; }
         public string PersonName { get; set; }
     }
-
 
 }
