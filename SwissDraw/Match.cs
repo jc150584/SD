@@ -17,6 +17,7 @@ namespace SwissDraw
         public int Person2 { get => person2; set => person2 = value; }
         public int Result { get => result; set => result = value; }
 
+        //コンストラクタ
         public Match(int i, int j)
         {
             person1 = i;
@@ -35,8 +36,18 @@ namespace SwissDraw
             // 勝数でkeyを分割する
             int[][] SplittedKeys = splitPersons(persons, results);
 
-
+            //「対戦していない」「同じチームじゃない」「勝ち数が同じ」
             Match[] matches = MakeMatch1(matchCount, SplittedKeys, persons, results);
+            if (matches == null)
+            {
+                //「対戦していない」「同じチームじゃない」
+                matches = MakeMatch2(matchCount, SplittedKeys, persons, results);
+                if (matches == null)
+                {
+                    //「対戦していない」
+                    matches = MakeMatch3(matchCount, SplittedKeys, persons, results);
+                }
+            }
 
             return matches;
         }
@@ -54,9 +65,9 @@ namespace SwissDraw
                 // 対応する対戦相手のくじ番号を取得する（使われていない、対戦していない、同じチームじゃない、勝ち数が同じ）
                 int versusKey = getVersusKey1(minKey, SplittedKeys, matches, persons, results);
 
-                // versusKey<0なら、対戦相手は見つからなかったため、nullを返す(すべて当てはまるもの)
-                if (versusKey < 0)
-                {
+                // versusKey<0なら、対戦相手は見つからなかったため、nullを返す
+                if (versusKey < 0) //すべて当てはまるものがない
+                { 
                     return null;
                 }
                 //対戦を保存する
@@ -75,8 +86,32 @@ namespace SwissDraw
                 // 最小のくじ番号を取得する(使われていないこと)
                 int minKey = GetMinimumKey(SplittedKeys, matches);
 
-                // 対応する対戦相手のくじ番号を取得する（使われていない、対戦していない、同じチームじゃない、勝ち数が同じ）
+                // 対応する対戦相手のくじ番号を取得する（使われていない、対戦していない、同じチームじゃない）
                 int versusKey = getVersusKey2(minKey, SplittedKeys, matches, persons, results);
+
+                // versusKey<0なら、対戦相手は見つからなかったため、nullを返す
+                if (versusKey < 0)
+                {
+                    return null;
+                }
+                //対戦を保存する
+                matches[i] = new Match(minKey, versusKey);
+            }
+            return matches;
+        }
+
+        // 「対戦していない」で対戦
+        public static Match[] MakeMatch3(int matchCount, int[][] SplittedKeys, Dictionary<int, Person> persons, Match[] results)
+        {
+            Match[] matches = new Match[matchCount];
+
+            for (int i = 0; i < matchCount; i++)
+            {
+                // 最小のくじ番号を取得する(使われていない)
+                int minKey = GetMinimumKey(SplittedKeys, matches);
+
+                // 対応する対戦相手のくじ番号を取得する（使われていない、対戦していない）
+                int versusKey = getVersusKey3(minKey, SplittedKeys, matches, persons, results);
 
                 // versusKey<0なら、対戦相手は見つからなかったため、nullを返す
                 if (versusKey < 0)
@@ -136,7 +171,7 @@ namespace SwissDraw
             bool flag = true;
             while (flag == true)
             {
-                //最小のくじ番号ならループを抜ける
+                //i勝グループ配列にくじ番号最小値が存在するか
                 if (splittedKeys[i].Contains(minKey) == true)
                 {
                     flag = false;
@@ -148,15 +183,15 @@ namespace SwissDraw
             }
             while (i <= splittedKeys.Length)
             {
-                foreach (int key in splittedKeys[i])
+                foreach (int key in splittedKeys[i])//勝ち数が同じグループの中で
                 {
-                    if (i != minKey)//自分でないか
+                    if (key != minKey)//自分でないか
                     {
-                        if (containsKey(matches, i) == false)//使われていないか
+                        if (containsKey(matches, key) == false)//使われていないか
                         {
-                            if (isMatched(results, i, minKey) == false)//すでに対戦しているか
+                            if (isMatched(results, key, minKey) == false)//すでに対戦しているか
                             {
-                                if (isSameGroup(persons, i, minKey) == false)//同じグループでないか
+                                if (isSameGroup(persons, key, minKey) == false)//同じグループでないか
                                 {
                                     //すべて当てはまれば対戦相手のkeyを返す
                                     return key;
@@ -173,6 +208,61 @@ namespace SwissDraw
         // 対応する対戦相手のくじ番号を取得する
         //（使われていない、対戦していない、同じチームじゃない、勝ち数無視）
         public static int getVersusKey2(int minKey, int[][] splittedKeys, Match[] matches,
+            Dictionary<int, Person> persons, Match[] results)
+        {
+            int i = 0;
+            bool flag = true;
+            while (flag == true)
+            {
+                //i勝グループ配列にくじ番号最小値が存在するか
+                if (splittedKeys[i].Contains(minKey) == true)
+                {
+                    flag = false;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            //splittedKeys2に最大勝ち数配列と勝ち数-1の配列を代入
+            int[][] splittedKeys2 = new int[i][];
+            foreach (int key in splittedKeys[i])
+            {
+                splittedKeys2[i][key] = splittedKeys[i][key];
+            }
+            foreach (int key in splittedKeys[i - 1])
+            {
+                splittedKeys2[i][key] = splittedKeys[i - 1][key];
+            }
+
+            while (i <= splittedKeys.Length -1)//勝ち数が同じグループの中で
+            {
+                foreach (int key in splittedKeys2[i])
+                {
+                    if (key != minKey)//自分でないか
+                    {
+                        if (containsKey(matches, key) == false)//使われていないか
+                        {
+                            if (isMatched(results, key, minKey) == false)//すでに対戦しているか
+                            {
+                                if (isSameGroup(persons, key, minKey) == false)//同じグループでないか
+                                {
+                                    return key;
+                                }
+                            }
+                        }
+                    }
+                }
+                i++;
+            }
+            return -1;
+        }
+
+
+        // 対応する対戦相手のくじ番号を取得する
+        //（使われていない、対戦していない、チーム無視、勝ち数無視）
+        public static int getVersusKey3(int minKey, int[][] splittedKeys, Match[] matches,
             Dictionary<int, Person> persons, Match[] results)
         {
             int i = 0;
