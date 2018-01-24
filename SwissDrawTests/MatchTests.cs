@@ -14,19 +14,47 @@ namespace SwissDraw.Tests
         [TestMethod()]
         public void MatchTest()
         {
-            Assert.Fail();
+            //Assert.Fail();
         }
 
         [TestMethod()]
         public void MakeMatchTest()
         {
-            Assert.Fail();
+            Dictionary<int, Person> persons = new Dictionary<int, Person>();
+            persons.Add(1, new Person { LotNumber = 1, PersonGroup = "A", PersonName = "安藤" });
+            persons.Add(2, new Person { LotNumber = 2, PersonGroup = "A", PersonName = "伊藤" });
+            persons.Add(3, new Person { LotNumber = 3, PersonGroup = "A", PersonName = "有働" });
+            persons.Add(4, new Person { LotNumber = 4, PersonGroup = "B", PersonName = "遠藤" });
+            persons.Add(5, new Person { LotNumber = 5, PersonGroup = "B", PersonName = "尾堂" });
+            persons.Add(6, new Person { LotNumber = 6, PersonGroup = "C", PersonName = "加藤" });
+
+            Match[] matches = Match.MakeMatch(persons, new Match[0]);
+            Assert.AreEqual(3, matches.Length);
+            Assert.AreEqual(1, matches[0].Person1);
+            Assert.AreEqual(4, matches[0].Person2);
+            matches[0].Result = 1;
+
+
         }
 
         [TestMethod()]
         public void MergeMatchTest()
         {
-            Assert.Fail();
+            Match[] matches1 = new Match[1];
+            matches1[0] = new Match(1, 2);
+
+            Match[] matches2 = new Match[2];
+            matches2[0] = new Match(2, 3);
+            matches2[1] = new Match(1, 4);
+
+            var result1 = Match.MergeMatch(matches1, new Match[0]);
+            Assert.AreEqual(1, result1.Length);
+
+            var result2 = Match.MergeMatch(matches1, matches2);
+            Assert.AreEqual(3, result2.Length);
+
+
+
         }
 
 
@@ -43,6 +71,7 @@ namespace SwissDraw.Tests
             persons.Add(6, new Person { LotNumber = 6, PersonGroup = "C", PersonName = "加藤" });
 
             int[] result = Match.GetKeyArray(persons);
+            Assert.AreEqual(6, result.Length);
             Assert.AreEqual(1, result[0]);
             Assert.AreEqual(2, result[1]);
             Assert.AreEqual(3, result[2]);
