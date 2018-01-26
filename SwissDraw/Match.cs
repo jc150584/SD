@@ -170,7 +170,7 @@ namespace SwissDraw
 
         // 対応する対戦相手のくじ番号を取得する
         //（使われていない、対戦していない、同じチームじゃない、勝ち数が同じ）
-        private static int GetVersusKey1(int minKey, int[][] splittedKeys, Match[] matches,
+        public static int GetVersusKey1(int minKey, int[][] splittedKeys, Match[] matches,
             Dictionary<int, Person> persons, Match[] results)
         {
             int i = 0;
@@ -298,7 +298,7 @@ namespace SwissDraw
         }
 
         // resultsの中に、iとjの対戦があればtrueを返す(すでに対戦していたらtrue)
-        private static bool IsMatched(Match[] results, int i, int j)
+        public static bool IsMatched(Match[] results, int i, int j)
         {
             foreach (Match m in results)
             {
@@ -311,7 +311,7 @@ namespace SwissDraw
         }
 
         // mがiとjの対戦ならtrueを返す
-        private static bool IsMatched(Match m, int i, int j)
+        public static bool IsMatched(Match m, int i, int j)
         {
             if (m.person1 == i)
             {
@@ -331,7 +331,7 @@ namespace SwissDraw
         }
 
         // 指定されたkeyの勝ち数を調べる
-        private static int GetWinCount(int key, Match[] results)
+        public static int GetWinCount(int key, Match[] results)
         {
             int winCount = 0;
             foreach (Match result in results)
@@ -368,20 +368,24 @@ namespace SwissDraw
         }
 
         // 最小のくじ番号を取得する(使われていないこと)
-        private static int GetMinimumKey(int[][] splittedKeys, Match[] matches)
+        public static int GetMinimumKey(int[][] splittedKeys, Match[] matches)
         {
-            int minKey = 100000;
+            int minKey = 999;
             foreach (int[] a in splittedKeys)
             {
                 foreach (int b in a)
                 {
                     if (minKey > b)
                     {
-                        if (ContainsKey(matches, b) == false)       /**********NullReferenceException**************/
+                        if (ContainsKey(matches, b) == false)       
                         {
                             minKey = b;
                         }
                     }
+                }
+                if(!(minKey == 999))
+                {
+                    return minKey;
                 }
             }
             return minKey;
@@ -392,7 +396,7 @@ namespace SwissDraw
         {
             foreach (Match m in matches)
             {
-                if (ContainsKey(m, i) == true)       /**********NullReferenceException**************/
+                if (!(m == null) && ContainsKey(m, i) == true)      
                 {
                     return true;
                 }
@@ -403,7 +407,7 @@ namespace SwissDraw
         //くじ番号iがすでに対戦に使われていたらtrue
         private static bool ContainsKey(Match m, int i)
         {
-            if (m.person1 == i)      /**********NullReferenceException**************/
+            if (m.person1 == i)      
             {
                 return true;
             }
