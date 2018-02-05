@@ -73,7 +73,7 @@ namespace SwissDraw
 
                 // versusKey<0なら、対戦相手は見つからなかったため、nullを返す
                 if (versusKey < 0) //すべて当てはまるものがない
-                { 
+                {
                     return null;
                 }
                 //対戦を保存する
@@ -227,7 +227,7 @@ namespace SwissDraw
                 }
             }
 
-            while (i <= splittedKeys.Length -1)//勝ち数が同じグループの中で
+            while (i <= splittedKeys.Length - 1)//勝ち数が同じグループの中で
             {
                 foreach (int key in splittedKeys[i])
                 {
@@ -377,13 +377,13 @@ namespace SwissDraw
                 {
                     if (minKey > b)
                     {
-                        if (ContainsKey(matches, b) == false)       
+                        if (ContainsKey(matches, b) == false)
                         {
                             minKey = b;
                         }
                     }
                 }
-                if(!(minKey == 999))
+                if (!(minKey == 999))
                 {
                     return minKey;
                 }
@@ -396,7 +396,7 @@ namespace SwissDraw
         {
             foreach (Match m in matches)
             {
-                if (!(m == null) && ContainsKey(m, i) == true)      
+                if (!(m == null) && ContainsKey(m, i) == true)
                 {
                     return true;
                 }
@@ -407,7 +407,7 @@ namespace SwissDraw
         //くじ番号iがすでに対戦に使われていたらtrue
         private static bool ContainsKey(Match m, int i)
         {
-            if (m.person1 == i)      
+            if (m.person1 == i)
             {
                 return true;
             }
