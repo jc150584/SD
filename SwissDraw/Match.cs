@@ -43,7 +43,7 @@ namespace SwissDraw
             int[][] SplittedKeys = SplitPersons(persons, results);
 
             //「対戦していない」「同じチームじゃない」「勝ち数が同じ」
-            Match[] matches = MakeMatch1(matchCount, SplittedKeys, persons, results);       /**********NullReferenceException**************/
+            Match[] matches = MakeMatch1(matchCount, SplittedKeys, persons, results);
             if (matches == null)
             {
                 //「対戦していない」「同じチームじゃない」
